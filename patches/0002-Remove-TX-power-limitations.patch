@@ -1,7 +1,7 @@
-diff --git a/root_stock/lib/wifi/qcawificfg80211.sh b/root_stock/lib/wifi/qcawificfg80211.sh
+diff --git a/lib/wifi/qcawificfg80211.sh b/lib/wifi/qcawificfg80211.sh
 index ae2c09e..9b1d16a 100644
---- a/root_stock/lib/wifi/qcawificfg80211.sh
-+++ b/root_stock/lib/wifi/qcawificfg80211.sh
+--- a/lib/wifi/qcawificfg80211.sh
++++ b/lib/wifi/qcawificfg80211.sh
 @@ -2977,34 +2977,6 @@ enable_qcawificfg80211() {
  		else
  			max_power=30
