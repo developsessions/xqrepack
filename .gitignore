@@ -1,0 +1,6 @@
+r3600-raw-img.bin
+ubifs-root/
+*_SSH.zip
+.env
+.python-version
+test
