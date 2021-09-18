@@ -33,9 +33,6 @@ unsquashfs -f -d "$FSDIR" "$IMG"
 mkdir "$FSDIR/opt"
 chmod 755 "$FSDIR/opt"
 
-# Replace Files
-cp -rf root/* "$FSDIR"
-
 # modify dropbear init
 sed -i 's/channel=.*/channel=release2/' "$FSDIR/etc/init.d/dropbear"
 sed -i 's/flg_ssh=.*/flg_ssh=1/' "$FSDIR/etc/init.d/dropbear"
@@ -104,7 +101,8 @@ done
 sed -i 's@\w\+.miwifi.com@localhost@g' $FSDIR/etc/config/miwifi
 
 # apply patch from xqrepack repository
-find patches -type f -exec bash -c "(cd "$FSDIR" && git apply -p1) < {}" \;
+find patches -type f -exec bash -c "(cd "$FSDIR" && patch -p1) < {}" \;
+find patches -type f -name \*.orig -delete
 
 >&2 echo "repacking squashfs..."
 rm -f "$IMG.new"

@@ -1,0 +1,48 @@
+diff --git a/root_stock/lib/wifi/qcawificfg80211.sh b/root_stock/lib/wifi/qcawificfg80211.sh
+index ae2c09e..9b1d16a 100644
+--- a/root_stock/lib/wifi/qcawificfg80211.sh
++++ b/root_stock/lib/wifi/qcawificfg80211.sh
+@@ -2977,34 +2977,6 @@ enable_qcawificfg80211() {
+ 		else
+ 			max_power=30
+ 		fi
+-		if [ "$bd_country_code" = "EU" ]; then
+-			if [ "$bdmode" = "24G" ]; then
+-				max_power=14
+-			else
+-				if [ "$channel" -ge 100 ]; then
+-					max_power=23
+-				else
+-					max_power=16
+-				fi
+-			fi
+-			if [ $ifname = "wl2" ]; then
+-				max_power=13
+-			fi
+-		fi
+-		#miwifi: reduce 3db for Brazil band1
+-		if [ "$nv_country_code" = "BR" ]; then
+-			if [ "$bdmode" = "5G" -a "$channel" -le 48 ]; then
+-				max_power=13
+-			fi
+-		fi
+-		#miwifi: we use band1 txpower for wifi ap mode
+-		netmode=`uci get xiaoqiang.common.NETMODE`
+-		if [ -n "$netmode" -a "$netmode" = "wifiapmode" -a "$bdmode" = "5G" ]; then
+-			max_power=16
+-			if [ "$nv_country_code" = "BR" ]; then
+-				max_power=13
+-			fi
+-		fi
+ 		config_get txpwr "$device" txpwr
+ 		if [ "$txpwr" = "mid" ]; then
+ 			txpower=`expr $max_power - 1`
+@@ -3866,7 +3838,7 @@ config wifi-iface
+ EOF
+ 	if [ $devidx = 0 ]; then
+ 		cat <<EOF
+-	option channel_block_list '52,56,60,64,100,104,108,112,116,120,124,128,132,136,140,144,165'
++	option channel_block_list '52,56,60,64'
+ 	option miwifi_mesh '1'
+ EOF
+ 	fi
