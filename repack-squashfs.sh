@@ -49,6 +49,7 @@ sed -i '/ssh_en=/d; /uart_en=/d; /boot_wait=/d;' "$FSDIR/usr/share/xiaoqiang/xia
 cat <<XQDEF >> "$FSDIR/usr/share/xiaoqiang/xiaoqiang-defaults.txt"
 uart_en=1
 ssh_en=1
+telnet_en=0
 boot_wait=on
 XQDEF
 
@@ -58,6 +59,7 @@ grep -q -w enable_dev_access "$FSDIR/lib/preinit/31_restore_nvram" || \
 enable_dev_access() {
 	nvram set uart_en=1
 	nvram set ssh_en=1
+    nvram set telnet_en=0
 	nvram set boot_wait=on
 	nvram commit
 }
@@ -90,7 +92,9 @@ done
 # prevent stats phone home & auto-update
 for f in StatPoints mtd_crash_log logupload.lua otapredownload; do > $FSDIR/usr/sbin/$f; done
 
-sed -i '/start_service(/a return 0' $FSDIR/etc/init.d/messagingagent.sh
+for f in wan_check messagingagent.sh; do
+	sed -i '/start_service(/a return 0' $FSDIR/etc/init.d/$f
+done
 
 # cron jobs are mostly non-OpenWRT stuff
 for f in $FSDIR/etc/crontabs/*; do
