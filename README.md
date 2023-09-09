@@ -1,7 +1,7 @@
 xqrepack
 =========
 
-These scripts allow you to modify the *Xiaomi R3600* firmware image to make sure SSH and UART access is always enabled.
+These scripts allow you to modify the *Xiaomi AX3600 and Xiaomi AX6000* firmware image to make sure SSH and UART access is always enabled.
 
 The default root password is `password`. Please remember to login to the router and change that after the upgrade. Your router settings like IP address and SSIDs are stored in the nvram and should stay the same.
 
@@ -17,7 +17,7 @@ Requirements
 You will need to install the following tools:
 
 - [ubi_reader](https://github.com/jrspruitt/ubi_reader)
-- ubinize
+- ubinize (mtd-utils)
 - unsquashfs / mksquashfs
 - fakeroot
 
@@ -26,19 +26,21 @@ Usage
 
 1. Download the firmware(s) from miwifi.com.
    It should be something like `miwifi_r3600_firmware_xxx_yyy.bin`.
-   Put it/them to `orig-firmwares` directory.
+   Put it/them to `orig-firmwares` in the specific router model directory.
+   E.g. for an AX3600 router copy the firmware to `orig-firmwares/AX3600`
 
 2. Run `make` to build archives of patched firmwares.
    This will build patched images with following naming convention:
-   - `<firmware_image_name>_SSH.zip`: patched with original `repack-squashfs.sh` script, which enables SSH and does its best to disable Xiaomi functions/bloatware
+   - `<firmware_image_name>_<ROUTER_MODEL>_SSH.bin`: patched with original `repack-squashfs.sh` script, which enables SSH and does its best to disable Xiaomi functions/bloatware
 
-3. After extracting a generated archive of your liking, you will get `r3600-raw-img.bin` file.
-   Flash this file directly into the router using SSH.
+3. Flash this file directly into the router using SSH.
    You cannot use the web UI because this is a raw image, and more importantly has no signature.
 
    If you are using a recently xqrepack'ed firmware, you can use the `xqflash` utility on the router to flash an update image:
 
-        xqflash /tmp/r3600-raw-img.bin
+        xqflash /tmp/r<firmware_image_name>_<ROUTER_MODEL>_SSH.bin
+
+   If you are using a original image, just copy xqrepack via scp to the router to prevent manual flashing.
 
    After it completes successfully, you should be able to `reboot`.
 
@@ -50,7 +52,7 @@ Manual Flashing
 
 The R3600 firmware uses an A/B partition system, called `rootfs` and `rootfs_1`. This corresponds to `mtd12` and `mtd13`. Find the partition that is not the one in use and use `ubiformat` to write the raw image onto the partition:
 
-    ubiformat /dev/mtd12 -f /tmp/r3600-raw-img.bin -s 2048 -O 2048
+    ubiformat /dev/mtd12 -f /tmp/<firmware_image_name>_<ROUTER_MODEL>_SSH.bin -s 2048 -O 2048
 
 Set the nvram variable to re-initialize `/etc` (and I think to switch partitions also):
 
