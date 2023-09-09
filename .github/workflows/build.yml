@@ -20,9 +20,14 @@ jobs:
     - name: pip install
       run: pip install python-lzo ubi_reader
     - name: make
-      run: make
+      run: make all
 
     - uses: actions/upload-artifact@v3
       with:
-        name: miwifi_r3600_all_6510e_3.0.22_INT_SSH.bin
-        path: miwifi_r3600_all_6510e_3.0.22_INT_SSH.bin
+        name: miwifi_r3600_all_6510e_3.0.22_INT_AX3600_SSH.bin
+        path: miwifi_r3600_all_6510e_3.0.22_INT_AX3600_SSH.bin
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: miwifi_ra72_firmware_129d1_1.0.103_AX6000_SSH.bin
+        path: miwifi_ra72_firmware_129d1_1.0.103_AX6000_SSH.bin
