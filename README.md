@@ -29,7 +29,8 @@ Usage
    Put it/them to `orig-firmwares` in the specific router model directory.
    E.g. for an AX3600 router copy the firmware to `orig-firmwares/AX3600`
 
-2. Run `make` to build archives of patched firmwares.
+2. Run `make all` to build all archives of patched firmwares.
+   For example, if you only interested to build the AX6000 firmware type in `make AX6000`.
    This will build patched images with following naming convention:
    - `<firmware_image_name>_<ROUTER_MODEL>_SSH.bin`: patched with original `repack-squashfs.sh` script, which enables SSH and does its best to disable Xiaomi functions/bloatware
 
